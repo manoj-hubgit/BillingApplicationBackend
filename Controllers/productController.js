@@ -51,9 +51,9 @@ export const updateProduct = async(req,res,next)=>{
 }
 
 export const allProduct = async(req,res,next)=>{
-    
+    const userId=req.user.id;
     try {
-        const products= await Products.find();
+        const products= await Products.find({user:userId});
         res.status(200).json({message:"All products retrived Successfully",result:products});
     } catch (error) {
         next(error)
