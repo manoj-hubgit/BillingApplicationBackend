@@ -1,4 +1,5 @@
 import Products from "../Models/productModel.js";
+import User from "../Models/userModel.js";
 import { errorHandler } from "../Utils/error.js";
 
 export const createProduct = async (req, res,next) => {
@@ -52,8 +53,15 @@ export const updateProduct = async(req,res,next)=>{
 
 export const allProduct = async(req,res,next)=>{
     const userId=req.user.id;
+    const {search}= req.query;
     try {
-        const products= await Products.find({user:userId});
+        const query ={
+            user:userId,
+        };
+      if(search){
+        query.productName={$regex:search,$options:"i"};
+      } 
+        const products= await Products.find(query);
         res.status(200).json({message:"All products retrived Successfully",result:products});
     } catch (error) {
         next(error)
@@ -67,5 +75,49 @@ export const userProduct = async(req,res,next)=>{
         res.status(200).json({ message: "User products retrieved Successfully", result: products });
     } catch (error) {
         
+    }
+}
+
+
+export const updateUser= async(req,res,next)=>{
+    const userId = req.user.id;
+    const {storeName, phone, street, city, state, country, postalCode } = req.body;
+try {
+    const updateUser =await User.findByIdAndUpdate(
+        userId,{ storeName, phone, street, city, state, country, postalCode},{new:true}
+    );
+    if(!updateUser){
+        return next(errorHandler(404,"User not Found"));
+    }
+
+    res.status(200).json({ message: "User updated successfully", user: updateUser });
+} catch (error) {
+    next(error);
+}
+}
+
+export const deleteUser= async(req,res,next)=>{
+    const userId= req.user.id;
+    try {
+        const deleteUser=await User.findByIdAndDelete(userId);
+        if(!deleteUser){
+            return next(errorHandler(404,"User not Found"));
+        }
+        res.status(200).json({ message: "Account deleted successfully" });
+    } catch (error) {
+        next(error);  
+    }
+}
+
+export const getUserProfile=async(req,res,next)=>{
+    const userId=req.user.id;
+    try {
+        const user = await User.findById(userId);
+        if(!user){
+            return next(errorHandler(404, "User not found"));
+        }
+        res.status(200).json({message:"Profile took successfully",result:user});
+    } catch (error) {
+        next(error)
     }
 }

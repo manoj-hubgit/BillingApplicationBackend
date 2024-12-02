@@ -14,8 +14,7 @@ export const registerUser=async(req,res,next)=>{
         await newUser.save();
         res.status(200).json({message:"User Registered Successfully"})
     } catch (error) {
-        next(error)
-        
+        next(error)    
     }
 }
 
@@ -29,9 +28,8 @@ try {
     }
     const token=jwt.sign({id:userDetail._id},process.env.JWT_SECRET_KEY);
     
-    res.status(200).json({message:"Logged in successfully",token:token})
+    res.status(200).json({message:"Logged in successfully",token:token, storeName:userDetail.storeName})
 } catch (error) {
     next(error)
 }
-
 }
