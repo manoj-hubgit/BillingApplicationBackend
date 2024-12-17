@@ -8,11 +8,11 @@ import billingRoute from "./Routers/BillingRouter.js";
 dotenv.config();
 const app=express();
 
-app.use(express.json());
 app.use(cors({
     origin:'*',
     credentials:true
 }));
+app.use(express.json());
 
 app.use((err,req,res,next)=>{
     const statusCode =err.statusCode || 500;
