@@ -23,5 +23,5 @@ MongoDB with Mongoose
 JWT Authentication
 
 API Documentation
-For detailed API endpoints and request formats, refer to the (API Documentation)[https://documenter.getpostman.com/view/35034228/2sAYdZtYvZ].
+For detailed API endpoints and request formats, refer to the (https://documenter.getpostman.com/view/35034228/2sAYdZtYvZ)[API Documentation].
 
